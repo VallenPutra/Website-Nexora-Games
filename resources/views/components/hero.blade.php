@@ -1,10 +1,6 @@
 <section class="bg-cream">
     <div class="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-2 md:items-center md:py-24">
         <div>
-            <span class="badge mb-6 bg-green-light text-green">
-                <span class="h-2 w-2 rounded-full bg-green"></span>
-                STATUS: HANDCRAFTING WORLDS // 16-BIT CARTRIDGE ACTIVE
-            </span>
 
             <h1 class="font-pixel text-3xl leading-[1.6] text-navy sm:text-4xl">
                 SMALL PIXELS.<br>

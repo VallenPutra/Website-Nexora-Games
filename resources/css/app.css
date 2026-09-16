@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap");
 
 /* Tailwind v4: design tokens are declared in CSS via @theme, replacing tailwind.config.js */
 @theme {
@@ -8,15 +8,15 @@
     /* Single sans font used for ALL body copy / labels across every section (also overrides default font-sans) */
     --font-sans: "Inter", sans-serif;
 
-    --color-cream: #FDF6EC;
-    --color-peach: #FBEBD6;
-    --color-navy: #1A1A1A;
-    --color-orange: #F4A340;
-    --color-orange-dark: #E08E24;
-    --color-green: #4C9A6B;
-    --color-green-light: #E4F3E9;
-    --color-purple: #8B5CF6;
-    --color-whatsapp: #25D366;
+    --color-cream: #fdf6ec;
+    --color-peach: #fbebd6;
+    --color-navy: #1a1a1a;
+    --color-orange: #f4a340;
+    --color-orange-dark: #e08e24;
+    --color-green: #4c9a6b;
+    --color-green-light: #e4f3e9;
+    --color-purple: #8b5cf6;
+    --color-whatsapp: #25d366;
 
     --radius-xl2: 1.25rem;
     --radius-xl3: 1.75rem;
@@ -30,7 +30,10 @@ body {
     @apply bg-cream text-navy font-sans antialiased;
 }
 
-h1, h2, h3, .font-pixel {
+h1,
+h2,
+h3,
+.font-pixel {
     line-height: 1.5;
     letter-spacing: 0.02em;
 }

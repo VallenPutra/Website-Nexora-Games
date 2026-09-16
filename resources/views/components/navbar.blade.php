@@ -10,7 +10,8 @@
             <a href="#games" class="hover:text-orange-dark">Games</a>
             <a href="#studio" class="hover:text-orange-dark">Studio</a>
             <a href="#devlog" class="hover:text-orange-dark">Devlog</a>
-            <a href="#contact" class="hover:text-orange-dark">Contact</a>
+            <a href="{{ route('contact') }}" class="hover:text-orange-dark">Contact</a>
+            <a href="{{ route('login') }}" class="hover:text-orange-dark">Login</a>
         </div>
 
         <div class="flex items-center gap-3">
@@ -28,7 +29,8 @@
             <a href="#games" @click="open = false">Games</a>
             <a href="#studio" @click="open = false">Studio</a>
             <a href="#devlog" @click="open = false">Devlog</a>
-            <a href="#contact" @click="open = false">Contact</a>
+            <a href="{{ route('contact') }}" @click="open = false">Contact</a>
+            <a href="{{ route('login') }}" @click="open = false">Login</a>
             <a href="#games" class="btn-primary w-fit">Play With Us</a>
         </div>
     </div>

@@ -2,6 +2,7 @@
     $waNumber = config('nexora.whatsapp_number');
     $waMessage = rawurlencode(config('nexora.whatsapp_message'));
     $waLink = "https://wa.me/{$waNumber}?text={$waMessage}";
+    $email = config('nexora.contact_email');
 @endphp
 
 <footer class="bg-navy">
@@ -32,7 +33,7 @@
             <div>
                 <p class="font-pixel text-[10px] text-cream/60">OUTPOSTS &amp; SIGNAL</p>
                 <ul class="mt-4 flex flex-col gap-2 text-sm text-cream/70">
-                    <li><a href="mailto:hello@nexoragames.com" class="hover:text-orange">hello@nexoragames.com</a></li>
+                    <li><a href="mailto:{{ $email }}" class="hover:text-orange">{{ $email }}</a></li>
                     <li>
                         <a href="{{ $waLink }}" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-orange">
                             <span class="flex h-5 w-5 items-center justify-center rounded-full bg-whatsapp">
