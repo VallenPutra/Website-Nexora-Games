@@ -16,7 +16,7 @@
     <x-philosophy />
     <x-devlog />
     <x-cta />
-    <x-whatsapp-contact />
     <x-footer />
+    <x-chat-bubble />
 </body>
 </html>
