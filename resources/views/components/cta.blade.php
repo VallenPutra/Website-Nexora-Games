@@ -10,7 +10,7 @@
                 </p>
                 <div class="mt-6 flex flex-wrap gap-4">
                     <a href="#games" class="btn-primary">Explore Our Games</a>
-                    <a href="{{ route('contact') }}" class="btn-outline-light">Contact The Studio</a>
+                    <a href="#contact" class="btn-outline-light">Contact The Studio</a>
                 </div>
             </div>
 
