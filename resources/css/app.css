@@ -1,9 +1,57 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap');
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-
+/* Tailwind v4: design tokens are declared in CSS via @theme, replacing tailwind.config.js */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Single pixel font used for ALL headings/titles across every section */
+    --font-pixel: "Press Start 2P", cursive;
+    /* Single sans font used for ALL body copy / labels across every section (also overrides default font-sans) */
+    --font-sans: "Inter", sans-serif;
+
+    --color-cream: #FDF6EC;
+    --color-peach: #FBEBD6;
+    --color-navy: #1A1A1A;
+    --color-orange: #F4A340;
+    --color-orange-dark: #E08E24;
+    --color-green: #4C9A6B;
+    --color-green-light: #E4F3E9;
+    --color-purple: #8B5CF6;
+    --color-whatsapp: #25D366;
+
+    --radius-xl2: 1.25rem;
+    --radius-xl3: 1.75rem;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-cream text-navy font-sans antialiased;
+}
+
+h1, h2, h3, .font-pixel {
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+}
+
+/* Consistent solid-color button styles reused across every section (no gradients) */
+.btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl3 bg-orange px-6 py-3 font-sans font-bold text-navy transition-colors hover:bg-orange-dark;
+}
+
+.btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl3 border-2 border-navy px-6 py-3 font-sans font-bold text-navy transition-colors hover:bg-navy hover:text-cream;
+}
+
+.btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl3 border-2 border-cream px-6 py-3 font-sans font-bold text-cream transition-colors hover:bg-cream hover:text-navy;
+}
+
+.btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-3 rounded-xl3 bg-whatsapp px-8 py-4 font-sans font-bold text-white transition-colors hover:bg-[#1ebc59];
+}
+
+.badge {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-sans font-semibold;
 }
