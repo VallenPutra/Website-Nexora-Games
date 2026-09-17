@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
@@ -30,6 +31,8 @@ Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('games', GameController::class)->except(['show']);
 
     Route::get('/chat', [AdminChatController::class, 'index'])->name('chat');
     Route::get('/chat/{session}', [AdminChatController::class, 'show'])->name('chat.show');

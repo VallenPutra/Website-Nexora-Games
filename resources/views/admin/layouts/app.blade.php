@@ -45,10 +45,9 @@
                 </a>
 
                 <p class="admin-nav-group-label">Content</p>
-                <a href="#" aria-disabled="true" class="admin-nav-link is-disabled">
+                <a href="{{ route('admin.games.index') }}" class="admin-nav-link {{ request()->routeIs('admin.games.*') ? 'is-active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg>
                     Games
-                    <span class="admin-soon-tag">Soon</span>
                 </a>
                 <a href="#" aria-disabled="true" class="admin-nav-link is-disabled">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h13l3 3v13H4Z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>

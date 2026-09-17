@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactSubmission;
+use App\Models\Game;
 use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
@@ -10,19 +12,21 @@ class DashboardController extends Controller
     /**
      * Show the admin dashboard overview.
      *
-     * NOTE — DEMO DATA:
-     * This project does not yet have Game, Devlog, or Message models/tables
-     * (only the default `users` table exists). Every array below is clearly
-     * marked demo/sample content so it is never mistaken for real production
-     * numbers. Once the corresponding models & migrations are created, swap
-     * each block for a real Eloquent query — the Blade view does not need to
-     * change, only the data passed into it.
+     * DATA STATUS:
+     * - Games: REAL — the `games` table/model exists, so Total Games,
+     *   Draft Projects, and Recent Projects are live queries.
+     * - Messages: REAL — the `contact_submissions` table/model exists,
+     *   so Unread Messages is a live query (read_at IS NULL).
+     * - Devlogs, Revenue, Studio Activity, Recent Activity: still DEMO
+     *   data — those models/tables don't exist yet. Each demo array
+     *   below is clearly commented and flagged so it's never mistaken
+     *   for production data.
      */
     public function index(): View
     {
-        $stats = $this->demoStats();
+        $stats = $this->stats();
         $revenue = $this->demoRevenue();
-        $recentProjects = $this->demoRecentProjects();
+        $recentProjects = $this->recentProjects();
         $studioActivity = $this->demoStudioActivity();
         $recentActivity = $this->demoRecentActivity();
 
@@ -32,41 +36,51 @@ class DashboardController extends Controller
             'recentProjects' => $recentProjects,
             'studioActivity' => $studioActivity,
             'recentActivity' => $recentActivity,
+            // Still true because Devlogs/Revenue/Activity below remain
+            // demo content — shown in the banner on the view.
             'isDemoData' => true,
         ]);
     }
 
     /**
-     * DEMO DATA — replace with real counts once Game / Devlog / Message
-     * models exist, e.g.:
-     *   'value' => \App\Models\Game::count(),
+     * Total Games, Draft Projects & Unread Messages are REAL, queried
+     * from the `games` and `contact_submissions` tables. Published
+     * Devlogs stays DEMO until a Devlog model exists.
      */
-    private function demoStats(): array
+    private function stats(): array
     {
+        $totalGames = Game::count();
+        $draftGames = Game::where('status', 'concept')->count();
+        $unreadMessages = ContactSubmission::whereNull('read_at')->count();
+
         return [
             [
                 'label' => 'Total Games',
-                'value' => 3,
-                'hint' => '3 projects in the pipeline',
+                'value' => $totalGames,
+                'hint' => $totalGames === 1 ? '1 project in the pipeline' : "{$totalGames} projects in the pipeline",
                 'icon' => 'games',
+                'demo' => false,
             ],
             [
                 'label' => 'Published Devlogs',
                 'value' => 12,
                 'hint' => '3 posts this month',
                 'icon' => 'devlog',
+                'demo' => true, // DEMO — no Devlog model yet
             ],
             [
                 'label' => 'Draft Projects',
-                'value' => 2,
-                'hint' => 'Awaiting review',
+                'value' => $draftGames,
+                'hint' => 'Games marked as "Concept"',
                 'icon' => 'draft',
+                'demo' => false,
             ],
             [
                 'label' => 'Unread Messages',
-                'value' => 5,
+                'value' => $unreadMessages,
                 'hint' => 'From the contact page',
                 'icon' => 'messages',
+                'demo' => false,
             ],
         ];
     }
@@ -90,31 +104,22 @@ class DashboardController extends Controller
     }
 
     /**
-     * DEMO DATA — fictional project rows. Replace with
-     * \App\Models\Game::latest()->take(4)->get() once that model exists.
+     * REAL DATA — latest games from the database. Returns an empty
+     * collection (not fabricated rows) when no games have been added yet;
+     * the Blade view renders an empty state in that case.
      */
-    private function demoRecentProjects(): array
+    private function recentProjects()
     {
-        return [
-            [
-                'title' => 'Pixelbound',
-                'genre' => 'Adventure Platformer',
-                'status' => 'In Development',
-                'updated' => '2 days ago',
-            ],
-            [
-                'title' => 'Moonberry',
-                'genre' => 'Cozy Adventure',
-                'status' => 'Concept',
-                'updated' => '5 days ago',
-            ],
-            [
-                'title' => 'Starforge',
-                'genre' => 'Pixel Action RPG',
-                'status' => 'In Development',
-                'updated' => '1 week ago',
-            ],
-        ];
+        return Game::latest('updated_at')
+            ->take(4)
+            ->get()
+            ->map(fn (Game $game) => [
+                'id' => $game->id,
+                'title' => $game->title,
+                'genre' => $game->genre ?: '—',
+                'status' => $game->status_label,
+                'updated' => $game->updated_at->diffForHumans(),
+            ]);
     }
 
     /**

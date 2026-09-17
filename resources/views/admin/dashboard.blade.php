@@ -29,7 +29,7 @@
     @if($isDemoData)
         <div class="mb-6 flex items-start gap-2.5 rounded-admin-md border border-admin-orange/30 bg-admin-orange/10 px-4 py-3 text-sm text-admin-orange-dark">
             <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
-            <p><strong>Demo data.</strong> Games, Devlogs, and Messages models don't exist in the database yet, so every number below is sample content for layout purposes — not real studio data.</p>
+            <p><strong>Games data is live</strong> from the database. Devlogs, Revenue, Studio Activity, and Recent Activity below are still <strong>demo data</strong> — those models don't exist yet. Cards are marked individually.</p>
         </div>
     @endif
 
@@ -62,6 +62,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                         @endswitch
                     </span>
+                    @if($stat['demo'] ?? false)
+                        <span class="admin-badge admin-badge-orange">Demo</span>
+                    @endif
                 </div>
                 <p class="mt-4 text-3xl font-extrabold text-admin-text">{{ $stat['value'] }}</p>
                 <p class="mt-1 text-sm font-semibold text-admin-text">{{ $stat['label'] }}</p>
@@ -100,11 +103,10 @@
         <div class="admin-card p-6">
             <h3 class="text-base font-bold text-admin-text">Quick Actions</h3>
             <div class="mt-4 flex flex-col gap-2.5">
-                <button type="button" disabled class="flex items-center gap-3 rounded-admin-md border border-admin-border px-3.5 py-3 text-left text-sm font-semibold text-admin-muted">
+                <a href="{{ route('admin.games.create') }}" class="flex items-center gap-3 rounded-admin-md border border-admin-border px-3.5 py-3 text-left text-sm font-semibold text-admin-text transition-colors hover:bg-admin-bg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                     Add New Game
-                    <span class="ml-auto rounded-full bg-admin-bg px-2 py-0.5 font-mono text-[10px]">Soon</span>
-                </button>
+                </a>
                 <button type="button" disabled class="flex items-center gap-3 rounded-admin-md border border-admin-border px-3.5 py-3 text-left text-sm font-semibold text-admin-muted">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                     Write Devlog
@@ -129,9 +131,16 @@
         <div class="admin-card p-6 xl:col-span-2">
             <div class="flex items-center justify-between">
                 <h3 class="text-base font-bold text-admin-text">Recent Projects</h3>
-                <button type="button" disabled class="text-xs font-semibold text-admin-muted">View All Games →</button>
+                <a href="{{ route('admin.games.index') }}" class="text-xs font-semibold text-admin-text hover:text-admin-orange-dark">View All Games →</a>
             </div>
 
+            @if(count($recentProjects) === 0)
+                <div class="flex flex-col items-center py-10 text-center">
+                    <p class="text-sm font-semibold text-admin-text">No games yet</p>
+                    <p class="mt-1 text-xs text-admin-muted">Add your first project to see it here.</p>
+                    <a href="{{ route('admin.games.create') }}" class="mt-4 rounded-admin-md bg-admin-orange px-4 py-2 text-xs font-bold text-admin-sidebar hover:bg-admin-orange-dark">Add New Game</a>
+                </div>
+            @else
             <div class="admin-scrollbar mt-4 -mx-6 overflow-x-auto px-6">
                 <table class="w-full min-w-130 border-collapse text-sm">
                     <thead>
@@ -160,13 +169,18 @@
                                 </td>
                                 <td class="py-3 pr-3 text-admin-muted">{{ $project['updated'] }}</td>
                                 <td class="py-3 text-right">
-                                    <button type="button" disabled class="text-xs font-semibold text-admin-muted">Manage</button>
+                                    @if(isset($project['id']))
+                                        <a href="{{ route('admin.games.edit', $project['id']) }}" class="text-xs font-semibold text-admin-text hover:text-admin-orange-dark">Manage</a>
+                                    @else
+                                        <button type="button" disabled class="text-xs font-semibold text-admin-muted">Manage</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            @endif
         </div>
 
         {{-- ============ 7. RECENT ACTIVITY ============ --}}
