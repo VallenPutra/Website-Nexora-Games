@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Studio admin account for logging into /admin (login: vallen@nexoragames.com / password)
+        $this->call(AdminUserSeeder::class);
     }
 }

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap");
+
+/*
+  Admin-only design tokens.
+  Deliberately separate from resources/css/app.css (the public site's
+  stylesheet) so nothing here can leak into or override the public
+  frontend's Press Start 2P / Inter theme. Only admin.blade views load
+  this file via @vite(['resources/css/admin.css', ...]).
+*/
+@theme {
+    --font-sans: "Plus Jakarta Sans", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    --color-admin-sidebar: #29263a;
+    --color-admin-sidebar-soft: #332f47;
+    --color-admin-bg: #f7f5f0;
+    --color-admin-card: #ffffff;
+    --color-admin-text: #29263a;
+    --color-admin-muted: #77727a;
+    --color-admin-orange: #f4a340;
+    --color-admin-orange-dark: #dd8f2b;
+    --color-admin-success: #7dbb78;
+    --color-admin-success-soft: #eaf5e9;
+    --color-admin-purple: #8b5cf6;
+    --color-admin-purple-soft: #f1ecfe;
+    --color-admin-border: #e8e3da;
+    --color-admin-danger: #e07a6b;
+    --color-admin-danger-soft: #fbeae7;
+
+    --radius-admin-lg: 1.25rem;
+    --radius-admin-md: 0.875rem;
+}
+
+body.admin-body {
+    @apply bg-admin-bg text-admin-text font-sans antialiased;
+}
+
+.admin-card {
+    @apply rounded-admin-lg border border-admin-border bg-admin-card;
+}
+
+.admin-nav-link {
+    @apply flex items-center gap-3 rounded-admin-md px-3.5 py-2.5 text-sm font-semibold text-white/65 transition-colors hover:bg-white/5 hover:text-white;
+}
+
+.admin-nav-link.is-active {
+    @apply bg-admin-orange/15 text-admin-orange hover:bg-admin-orange/15 hover:text-admin-orange;
+}
+
+.admin-nav-link.is-disabled {
+    @apply cursor-not-allowed text-white/30 hover:bg-transparent hover:text-white/30;
+}
+
+.admin-nav-group-label {
+    @apply px-3.5 pb-2 pt-5 text-[11px] font-bold uppercase tracking-wider text-white/35;
+}
+
+.admin-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+}
+
+.admin-badge-orange { @apply bg-admin-orange/15 text-admin-orange-dark; }
+.admin-badge-success { @apply bg-admin-success-soft text-admin-success; }
+.admin-badge-purple { @apply bg-admin-purple-soft text-admin-purple; }
+.admin-badge-muted { @apply bg-admin-border/60 text-admin-muted; }
+
+.admin-soon-tag {
+    @apply ml-auto rounded-full bg-white/10 px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/50;
+}
+
+.admin-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+.admin-scrollbar::-webkit-scrollbar-thumb { background: var(--color-admin-border); border-radius: 999px; }
