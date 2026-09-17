@@ -8,4 +8,10 @@ return [
 
     // Email kontak resmi studio — dipakai di section kontak dan footer.
     'contact_email' => env('NEXORA_EMAIL', 'hello@nexoragames.com'),
+
+    // Link sosial media studio — dipakai di footer (bagian SIGNAL).
+    // Ganti nilainya di .env kalau sudah ada akun resminya.
+    'steam_url' => env('NEXORA_STEAM_URL', '#'),
+    'discord_url' => env('NEXORA_DISCORD_URL', '#'),
+    'x_url' => env('NEXORA_X_URL', '#'),
 ];
