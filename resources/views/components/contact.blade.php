@@ -34,29 +34,168 @@
                 </a>
             </div>
 
-            {{-- Admin chat card --}}
-            <div class="flex flex-col rounded-xl3 border-2 border-navy bg-white p-6">
-                <span class="flex h-11 w-11 items-center justify-center rounded-xl2 bg-whatsapp/15 text-whatsapp">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-current">
-                        <path d="M16.001 2.667c-7.363 0-13.334 5.97-13.334 13.333 0 2.352.615 4.646 1.782 6.666l-1.89 6.9 7.07-1.855a13.27 13.27 0 0 0 6.372 1.622h.006c7.363 0 13.333-5.97 13.333-13.333 0-3.562-1.387-6.912-3.906-9.43a13.246 13.246 0 0 0-9.433-3.903zm0 24.4h-.005a11.06 11.06 0 0 1-5.64-1.545l-.405-.24-4.195 1.1 1.12-4.088-.264-.42a11.05 11.05 0 0 1-1.696-5.874c0-6.11 4.973-11.083 11.088-11.083 2.962 0 5.747 1.155 7.84 3.25a11.02 11.02 0 0 1 3.246 7.837c0 6.11-4.973 11.063-11.089 11.063z" />
-                    </svg>
-                </span>
-                <h3 class="font-pixel mt-4 text-sm text-navy">CHAT ADMIN</h3>
-                <p class="mt-2 text-sm text-navy/60">
-                    Mau ngobrol langsung? Tim kami standby di WhatsApp, Senin&ndash;Jumat,
-                    09.00&ndash;18.00 WIB.
+            {{-- Admin chat card: real-time chat with the admin (WhatsApp link kept as a secondary option) --}}
+            <div
+                x-data="nexoraChat()"
+                x-init="init()"
+                class="flex flex-col rounded-xl3 border-2 border-navy bg-white p-6"
+            >
+                <div class="flex items-center gap-3">
+                    <span class="flex h-11 w-11 items-center justify-center rounded-xl2 bg-whatsapp/15 text-whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-current">
+                            <path d="M16.001 2.667c-7.363 0-13.334 5.97-13.334 13.333 0 2.352.615 4.646 1.782 6.666l-1.89 6.9 7.07-1.855a13.27 13.27 0 0 0 6.372 1.622h.006c7.363 0 13.333-5.97 13.333-13.333 0-3.562-1.387-6.912-3.906-9.43a13.246 13.246 0 0 0-9.433-3.903z"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <h3 class="font-pixel text-sm text-navy">CHAT ADMIN</h3>
+                        <p class="flex items-center gap-1.5 text-xs font-semibold text-green">
+                            <span class="h-1.5 w-1.5 rounded-full bg-green"></span> Online now
+                        </p>
+                    </div>
+                </div>
+
+                <p class="mt-3 text-sm text-navy/60">
+                    Chat langsung sama tim kami, real-time — nggak perlu keluar dari halaman ini.
                 </p>
-                <a href="{{ $waLink }}" target="_blank" rel="noopener" class="btn-whatsapp mt-5 w-fit">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-4 w-4 fill-white">
-                        <path d="M16.001 2.667c-7.363 0-13.334 5.97-13.334 13.333 0 2.352.615 4.646 1.782 6.666l-1.89 6.9 7.07-1.855a13.27 13.27 0 0 0 6.372 1.622h.006c7.363 0 13.333-5.97 13.333-13.333 0-3.562-1.387-6.912-3.906-9.43a13.246 13.246 0 0 0-9.433-3.903zm0 24.4h-.005a11.06 11.06 0 0 1-5.64-1.545l-.405-.24-4.195 1.1 1.12-4.088-.264-.42a11.05 11.05 0 0 1-1.696-5.874c0-6.11 4.973-11.083 11.088-11.083 2.962 0 5.747 1.155 7.84 3.25a11.02 11.02 0 0 1 3.246 7.837c0 6.11-4.973 11.063-11.089 11.063zm6.078-8.293c-.333-.167-1.97-.972-2.276-1.083-.305-.111-.527-.167-.75.167-.222.333-.86 1.083-1.055 1.305-.194.222-.388.25-.72.083-.334-.167-1.409-.52-2.684-1.657-.992-.885-1.662-1.978-1.856-2.311-.194-.333-.02-.514.146-.68.15-.15.334-.389.5-.583.167-.195.222-.334.334-.556.111-.223.055-.417-.028-.584-.083-.167-.75-1.807-1.028-2.474-.27-.65-.545-.562-.75-.572l-.639-.011c-.222 0-.583.083-.888.417-.305.333-1.166 1.14-1.166 2.78 0 1.64 1.194 3.223 1.36 3.446.167.222 2.351 3.59 5.696 5.036.796.344 1.417.549 1.901.703.799.254 1.526.218 2.101.132.641-.096 1.97-.805 2.248-1.583.278-.778.278-1.445.195-1.584-.083-.139-.306-.222-.639-.389z" />
-                    </svg>
-                    Chat via WhatsApp
-                </a>
-                <p class="mt-3 text-xs text-navy/40">{{ $waNumber }}</p>
+
+                {{-- Message log --}}
+                <div
+                    x-ref="log"
+                    class="mt-4 flex h-56 flex-col gap-2 overflow-y-auto rounded-xl2 border-2 border-navy/10 bg-cream p-3"
+                >
+                    <template x-if="messages.length === 0">
+                        <p class="m-auto max-w-[80%] text-center text-xs text-navy/40">
+                            Belum ada pesan. Mulai chat dengan tim Nexora Games di bawah 👇
+                        </p>
+                    </template>
+
+                    <template x-for="msg in messages" :key="msg.id">
+                        <div :class="msg.sender_type === 'admin' ? 'self-start items-start' : 'self-end items-end'" class="flex max-w-[85%] flex-col">
+                            <span
+                                :class="msg.sender_type === 'admin' ? 'bg-white text-navy border-2 border-navy/10' : 'bg-orange text-navy'"
+                                class="rounded-xl2 px-3 py-2 text-sm"
+                                x-text="msg.body"
+                            ></span>
+                            <span class="mt-0.5 text-[10px] text-navy/30" x-text="(msg.sender_type === 'admin' ? 'Admin · ' : 'Kamu · ') + msg.time"></span>
+                        </div>
+                    </template>
+                </div>
+
+                {{-- Composer --}}
+                <form @submit.prevent="send()" class="mt-3 flex items-center gap-2">
+                    <input
+                        x-model="draft"
+                        type="text"
+                        placeholder="Tulis pesan..."
+                        class="w-full rounded-xl2 border-2 border-navy/20 bg-cream px-4 py-2.5 text-sm text-navy placeholder:text-navy/40 focus:border-navy focus:outline-none"
+                    >
+                    <button type="submit" :disabled="sending || !draft.trim()" class="btn-primary shrink-0 px-4! py-2.5! disabled:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.77 59.77 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.874L5.999 12Zm0 0h7.5" />
+                        </svg>
+                    </button>
+                </form>
+
+                <p class="mt-2 text-xs text-navy/40" x-show="error" x-text="error"></p>
+
+                <div class="mt-4 border-t border-navy/10 pt-4">
+                    <a href="{{ $waLink }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-xs font-bold text-navy/50 hover:text-whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-4 w-4 fill-current">
+                            <path d="M16.001 2.667c-7.363 0-13.334 5.97-13.334 13.333 0 2.352.615 4.646 1.782 6.666l-1.89 6.9 7.07-1.855a13.27 13.27 0 0 0 6.372 1.622h.006c7.363 0 13.333-5.97 13.333-13.333 0-3.562-1.387-6.912-3.906-9.43a13.246 13.246 0 0 0-9.433-3.903z"/>
+                        </svg>
+                        Prefer WhatsApp? Chat via WhatsApp instead
+                    </a>
+                    <p class="mt-2 text-xs text-navy/40">{{ $waNumber }}</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    function nexoraChat() {
+        return {
+            messages: [],
+            draft: '',
+            sending: false,
+            error: '',
+            lastId: 0,
+            pollTimer: null,
+
+            init() {
+                this.poll();
+                this.pollTimer = setInterval(() => this.poll(), 4000);
+            },
+
+            csrfToken() {
+                return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            },
+
+            scrollToBottom() {
+                this.$nextTick(() => {
+                    this.$refs.log.scrollTop = this.$refs.log.scrollHeight;
+                });
+            },
+
+            appendMessages(newMessages) {
+                if (!newMessages || newMessages.length === 0) return;
+                newMessages.forEach((m) => {
+                    this.messages.push(m);
+                    this.lastId = Math.max(this.lastId, m.id);
+                });
+                this.scrollToBottom();
+            },
+
+            async poll() {
+                try {
+                    const res = await fetch(`{{ route('chat.poll') }}?after=${this.lastId}`, {
+                        credentials: 'same-origin',
+                        headers: { 'Accept': 'application/json' },
+                    });
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    this.appendMessages(data.messages);
+                } catch (e) {
+                    // Silent fail — the next poll cycle will retry.
+                }
+            },
+
+            async send() {
+                const body = this.draft.trim();
+                if (!body) return;
+
+                this.sending = true;
+                this.error = '';
+
+                try {
+                    const res = await fetch(`{{ route('chat.send') }}`, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': this.csrfToken(),
+                        },
+                        body: JSON.stringify({ message: body }),
+                    });
+
+                    if (!res.ok) {
+                        this.error = 'Pesan gagal terkirim, coba lagi ya.';
+                        return;
+                    }
+
+                    const data = await res.json();
+                    this.appendMessages([data.message]);
+                    this.draft = '';
+                } catch (e) {
+                    this.error = 'Pesan gagal terkirim, coba lagi ya.';
+                } finally {
+                    this.sending = false;
+                }
+            },
+        };
+    }
+</script>
 
 {{-- Contact form --}}
 <section id="contact-form" class="bg-cream">
